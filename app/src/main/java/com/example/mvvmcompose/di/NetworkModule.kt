@@ -1,8 +1,7 @@
 package com.example.mvvmcompose.di
 
 import com.example.mvvmcompose.data.remote.ApiDetail
-import com.example.mvvmcompose.data.remote.ApiReference
-import com.example.mvvmcompose.ui.CurrencyViewModel
+import com.example.mvvmcompose.data.remote.ApiReference.BASE_URL_DOG
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -18,12 +17,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 class NetworkModule {
 
     @Provides
-    fun provideRetrofit(
-        gson: Gson,
-        client: OkHttpClient
-    ): ApiDetail {
+    fun provideRetrofit(gson: Gson, client: OkHttpClient): ApiDetail {
         return Retrofit.Builder()
-            .baseUrl(ApiReference.BASE_URL)
+            .baseUrl(BASE_URL_DOG)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .client(client)
             .build()
@@ -31,17 +27,15 @@ class NetworkModule {
     }
 
     @Provides
-    fun provideOkHttpClient(
-        loggingInterceptor: HttpLoggingInterceptor
-    ): OkHttpClient {
-        return OkHttpClient.Builder()
-            .addInterceptor(loggingInterceptor)
-            .build()
+    fun provideGson(): Gson {
+        return Gson()
     }
 
     @Provides
-    fun provideGson(): Gson {
-        return Gson()
+    fun provideOkHttpClient(loggingInterceptor: HttpLoggingInterceptor): OkHttpClient {
+        return OkHttpClient.Builder()
+            .addInterceptor(loggingInterceptor)
+            .build()
     }
 
     @Provides
